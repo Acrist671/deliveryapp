@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>MSG Burger</title>
+    <link rel="stylesheet" th:href="@{/styles.css}"/>
+</head>
+<body>
+<form method="POST" th:action="@{/orders}" th:object="${order}">
+    <h1>Order your burger creation:</h1>
+    <img th:src="@{/images/MSGBurgers.webp}" alt="логотип MSG Burgers" style="width: 200px;"/><br/>
+    <h3>Your burger in order:</h3>
+    <a th:href="@{/design}" id = "another">Design another burger</a>
+    <ul>
+        <li th:each="burger : ${order.burgers}">
+            <span th:text="${burger.name}">burger name</span>
+        </li>
+    </ul>
+
+    <div th:if="${#fields.hasErrors()}">
+         <span class="validationError">
+             Please correct problem below and submit
+         </span>
+    </div>
+
+    <h3>Deliver my burgers to...</h3>
+    <label for="userName">Your name: </label>
+    <input id="userName" type="text" th:field="*{userName}"/>
+    <span class="validationError"
+          th:if="${#fields.hasErrors('userName')}"
+          th:errors="*{userName}">Username error</span>
+    <br/>
+    <label for="city">City: </label>
+    <input id="city" type="text" th:field="*{address.city}"/>
+    <br/>
+    <label for="street">Street: </label>
+    <input id="street" type="text" th:field="*{address.street}"/>
+    <br/>
+    <label for="house">House: </label>
+    <input id="house" type="text" th:field="*{address.house}"/>
+    <br/>
+
+    <h3>Here's how I'll pay...</h3>
+    <br/>
+    <label for="cardNumber">Card Number: </label>
+    <input id="cardNumber" type="text" th:field="*{cardInfo.cardNumber}">
+    <span class="validationError"
+          th:if="${#fields.hasErrors('cardInfo.cardNumber')}"
+          th:errors="*{cardInfo.cardNumber}">Card number error</span>
+    <br/>
+    <label for="expiryDate">Expiry Date: </label>
+    <input id="expiryDate" type="text" th:field="*{cardInfo.expiryDate}">
+    <span class="validationError"
+          th:if="${#fields.hasErrors('cardInfo.expiryDate')}"
+          th:errors="*{cardInfo.expiryDate}">Ex date error</span>
+    <br/>
+    <label for="cvv">CVV: </label>
+    <input id="cvv" type="text" th:field="*{cardInfo.cvv}">
+    <span class="validationError"
+          th:if="${#fields.hasErrors('cardInfo.cvv')}"
+          th:errors="*{cardInfo.cvv}">CVV error</span>
+    <br/>
+
+    <input type="submit" value="Submit Order">
+</form>
+</body>
+</html>
