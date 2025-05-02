@@ -13,4 +13,10 @@ public class Address implements Serializable {
     private String street;
     @NotBlank(message = "Delivery house is required")
     private String house;
+    public Address() {}
+    public Address (String city, String street, String house) {
+        this.city = city;
+        this.street = street;
+        this.house = house;
+    }
 }

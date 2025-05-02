@@ -32,12 +32,21 @@
     <br/>
     <label for="city">City: </label>
     <input id="city" type="text" th:field="*{address.city}"/>
+    <span class="validationError"
+          th:if="${#fields.hasErrors('address.city')}"
+          th:errors="*{address.city}">City error</span>
     <br/>
     <label for="street">Street: </label>
     <input id="street" type="text" th:field="*{address.street}"/>
+    <span class="validationError"
+          th:if="${#fields.hasErrors('address.street')}"
+          th:errors="*{address.street}">Street error</span>
     <br/>
     <label for="house">House: </label>
     <input id="house" type="text" th:field="*{address.house}"/>
+    <span class="validationError"
+          th:if="${#fields.hasErrors('address.house')}"
+          th:errors="*{address.house}">House error</span>
     <br/>
 
     <h3>Here's how I'll pay...</h3>

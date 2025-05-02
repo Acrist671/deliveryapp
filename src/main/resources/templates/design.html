@@ -9,6 +9,9 @@
     <h1>Design your burger!</h1>
     <img th:src="@{/images/MSGBurgers.webp}" alt="логотип MSG Burgers" style="width: 200px;"/>
     <form method="post" th:object="${burger}">
+        <div th:if="${#fields.hasErrors('ingredients')}">
+            <span class="validationError" th:errors="*{ingredients}">Ingredients error</span>
+        </div>
         <div class="grid">
             <div class = "ingredient-group" id = "wrap">
                 <h3>Design your wrap</h3>
@@ -58,7 +61,11 @@
         </div>
         <div>
             <h3>Name your burger:</h3>
-            <input type="text" th:field="*{name}"/> <br/>
+            <input type="text" th:field="*{name}"/>
+            <span class="validationError"
+                  th:if="${#fields.hasErrors('name')}"
+                  th:errors="*{name}">Name error</span>
+            <br/>
             <button>Submit your burger</button>
         </div>
     </form>
