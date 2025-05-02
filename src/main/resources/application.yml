@@ -1,0 +1,13 @@
+spring:
+  application:
+    name: deliveryapp
+  datasource:
+    url: jdbc:postgresql://localhost:5432/postgres
+    username: postgres
+    password: Mmm1i2k3e4
+    generate-unique-name: false
+    name: burgercloud
+  sql:
+    init:
+      mode: always
+      platform: postgresql

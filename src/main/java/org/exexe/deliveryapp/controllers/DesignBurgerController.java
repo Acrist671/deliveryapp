@@ -5,14 +5,14 @@ import lombok.extern.slf4j.Slf4j;
 import org.exexe.deliveryapp.models.Burger;
 import org.exexe.deliveryapp.models.Ingredient;
 import org.exexe.deliveryapp.models.Order;
+import org.exexe.deliveryapp.repositories.IngredientRepository;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Arrays;
-import java.util.List;
 import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 @Slf4j
 @Controller
@@ -20,22 +20,15 @@ import java.util.stream.Collectors;
 @SessionAttributes("order")
 public class DesignBurgerController {
 
+    private final IngredientRepository ingredientRepository;
+
+    public DesignBurgerController(IngredientRepository ingredientRepository) {
+        this.ingredientRepository = ingredientRepository;
+    }
+
     @ModelAttribute
     public void AddIngredientsToModel(Model model) {
-        List<Ingredient> ingredients = Arrays.asList(
-                new Ingredient("GRN", "Grain", Ingredient.Type.WRAP),
-                new Ingredient("RYE", "Rye", Ingredient.Type.WRAP),
-                new Ingredient("PRK", "Pork", Ingredient.Type.PROTEIN),
-                new Ingredient("BEF", "Beef", Ingredient.Type.PROTEIN),
-                new Ingredient("CHN", "Chicken", Ingredient.Type.PROTEIN),
-                new Ingredient("CHR", "Cheddar", Ingredient.Type.CHEESE),
-                new Ingredient("PSN", "Parmesan", Ingredient.Type.CHEESE),
-                new Ingredient("TMS", "Tomatoes", Ingredient.Type.VEGETABLE),
-                new Ingredient("CBG", "Cabbage", Ingredient.Type.VEGETABLE),
-                new Ingredient("ONI", "Onion", Ingredient.Type.VEGETABLE),
-                new Ingredient("CHS", "Cheesy", Ingredient.Type.SAUCE),
-                new Ingredient("KUP", "Ketchup", Ingredient.Type.SAUCE)
-        );
+        Iterable<Ingredient> ingredients = ingredientRepository.getIngredients();
         Ingredient.Type[] types = Ingredient.Type.values();
         for (Ingredient.Type type : types) {
             model.addAttribute(type.toString().toLowerCase(), FilterByType(ingredients, type));
@@ -67,10 +60,9 @@ public class DesignBurgerController {
         return "redirect:/orders/current";
     }
     private Iterable<Ingredient> FilterByType(
-            List<Ingredient> ingredients, Ingredient.Type type) {
-        return ingredients.
-                stream().
-                filter(ingredient -> ingredient.getType().equals(type))
+            Iterable<Ingredient> ingredients, Ingredient.Type type) {
+        return StreamSupport.stream(ingredients.spliterator(), false)
+                .filter(ingredient -> ingredient.getType().equals(type))
                 .collect(Collectors.toList());
     }
 }
